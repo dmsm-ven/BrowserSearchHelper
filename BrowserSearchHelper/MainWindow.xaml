@@ -4,9 +4,73 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BrowserSearchHelper"
+        xmlns:vm="clr-namespace:BrowserSearchHelper.ViewModels"
+        xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type=vm:MainWindowViewModel}"
+        Title="{Binding ImagesSearchViewModel.ProgressStatus.StatusMessage}"
+         Height="450" Width="800">
+    <Grid Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Шаг 3. Поиск и сохранение" Grid.Row="0" Padding="2 2 16 2" Margin="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button ToolTip="Следующий запрос" 
+                    IsDefault="True"
+                    Grid.Column="0"                   
+                    Style="{StaticResource IconButtonStyle}"
+                    Command="{Binding MoveNextCommand}">
+                    <icons:PackIconMaterial Kind="PageNext"  />
+                </Button>
+
+                <TextBlock Grid.Column="3" 
+                       Text="{Binding SavedImagesStatus}"
+                       Margin="4 2 2 2"
+                       HorizontalAlignment="Left"
+                       d:Text="Успешно закачан"
+                       VerticalAlignment="Center"/>
+
+            </Grid>
+
+        </GroupBox>
+        <GroupBox Header="Шаг 2. Подготовка исходных данных" Grid.Row="1" Padding="2 2 16 2" Margin="4">
+            <DockPanel>
+
+
+                <Button ToolTip="Вставить из буфера клавиатуры"
+                Style="{StaticResource IconButtonStyle}"
+                Command="{Binding LoadRawDataCommand}" HorizontalAlignment="Left">
+                    <icons:PackIconMaterial Kind="Clipboard"  />
+                </Button>
+                <Button ToolTip="Запустить"
+                    DockPanel.Dock="Left"
+                    Style="{StaticResource IconButtonStyle}"
+                    Command="{Binding StartCommand}">
+                    <icons:PackIconMaterial Kind="Run"  />
+                </Button>
+               
+                <TextBlock Margin="4" VerticalAlignment="Center">Начальная папка</TextBlock>
+                <TextBox Margin="2" VerticalAlignment="Center" FontSize="12" Text="{Binding SelectedProvider.DefaultFolder}" MinWidth="200"/>
+            </DockPanel>
+        </GroupBox>
+        <GroupBox Header="Шаг 1. Выбор провайдера поиска" Grid.Row="2" Padding="2 2 16 2" Margin="4">
+            <ListBox ItemsSource="{Binding SearchProviders}"
+                 DisplayMemberPath="Name"
+                 SelectedValue="{Binding SelectedProvider}" Padding="4" BorderThickness="0">
+            </ListBox>
+        </GroupBox>
 
     </Grid>
 </Window>

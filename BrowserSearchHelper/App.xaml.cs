@@ -1,6 +1,8 @@
 ﻿using BrowserSearchHelper.ViewModels;
+using ContentManagerHelper.ImageSearcher;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Configuration.Provider;
 using System.Windows;
 
 namespace BrowserSearchHelper;
@@ -18,6 +20,8 @@ public partial class App : Application
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) =>
             {
+                services.AddSingleton<ImageSearcherBase>(x => new GoogleImagesSearcher());
+                services.AddSingleton<ImageSearcherBase>(x => new YandexImagesSearcher());
                 services.AddSingleton<MainWindowViewModel>();
             })
             .Build();
